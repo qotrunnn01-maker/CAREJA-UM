@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careja</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f4f7fb;
+  color: #333;
+}
+
+header {
+  background: white;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 20px;
+  color: #2b7cff;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #555;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.hero {
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.btn {
+  background: #2b7cff;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 30px 40px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.form {
+  max-width: 500px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.hidden {
+  display: none;
+}
+
+.section-title {
+  padding: 20px 40px;
+  font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">CAREJA</div>
+  <nav>
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('projects')">Projects</a>
+    <a onclick="showPage('profile')">Portfolio</a>
+  </nav>
+</header>
+
+<div id="home">
+  <div class="hero">
+    <h1>From Zero Experience to Real Impact</h1>
+    <p>Buktikan skill kamu lewat project nyata, bukan sekadar CV</p>
+    <button class="btn" onclick="showPage('projects')">Mulai</button>
+  </div>
+</div>
+
+<div id="projects" class="hidden">
+  <div class="section-title">Projects</div>
+  <div class="grid">
+    <div class="card">
+      <h3>Marketing Plan</h3>
+      <p>Strategi konten UMKM</p>
+      <button class="btn" onclick="selectProject('Marketing Plan')">Kerjakan</button>
+    </div>
+    <div class="card">
+      <h3>Logo Design</h3>
+      <p>Desain logo brand</p>
+      <button class="btn" onclick="selectProject('Logo Design')">Kerjakan</button>
+    </div>
+  </div>
+</div>
+
+<div id="submit" class="hidden">
+  <div class="section-title">Submit</div>
+  <div class="form">
+    <p id="projectName"></p>
+    <input type="text" id="name" placeholder="Nama">
+    <textarea id="result" placeholder="Hasil project"></textarea>
+    <button class="btn" onclick="submitProject()">Submit</button>
+  </div>
+</div>
+
+<div id="profile" class="hidden">
+  <div class="section-title">Portfolio</div>
+  <div class="grid" id="portfolio"></div>
+</div>
+
+<script>
+let selectedProject = "";
+let portfolioData = [];
+
+function showPage(page) {
+  ["home","projects","submit","profile"].forEach(id => {
+    document.getElementById(id).classList.add("hidden");
+  });
+  document.getElementById(page).classList.remove("hidden");
+}
+
+function selectProject(project) {
+  selectedProject = project;
+  document.getElementById("projectName").innerText = "Project: " + project;
+  showPage("submit");
+}
+
+function submitProject() {
+  let name = document.getElementById("name").value;
+  let result = document.getElementById("result").value;
+
+  if (!name || !result) {
+    alert("Isi semua!");
+    return;
+  }
+
+  portfolioData.push({name, project: selectedProject, result});
+  showPage("profile");
+  renderPortfolio();
+}
+
+function renderPortfolio() {
+  let container = document.getElementById("portfolio");
+  container.innerHTML = "";
+  portfolioData.forEach(item => {
+    container.innerHTML += `
+      <div class="card">
+        <h3>${item.project}</h3>
+        <p>${item.name}</p>
+        <p>${item.result}</p>
+      </div>`;
+  });
+}
+</script>
+
+</body>
+</html>
